@@ -40,6 +40,19 @@ const textareaInput = (e) => {
     textarea.value.style.height = "auto"
     textarea.value.style.height = `${e.target.scrollHeight}px`
 }
+
+const addTweet = () => {
+    if (!tweet.value) return
+
+    let data = new FormData()
+
+    data.append('tweet', tweet.value)
+    data.append('file', file.value)
+
+    router.post('/tweets', data)
+
+    closeMessageBox()
+}
 </script>
 
 <template>
@@ -77,12 +90,13 @@ const textareaInput = (e) => {
                         </div>
                     </div>
                 </div>
+                <div class="absolute top-0 z-0 h-full overflow-auto scrollbar-hide">
+                    <div class="mt-[126px]"></div>
+                        <slot />
+                    <div class="pb-4"></div>
+                </div>
             </div>
-            <div class="absolute top-0 z-0 h-full overflow-auto scrollbar-hide">
-                <div class="mt-[126px]"></div>
-                <!-- <slot /> -->
-                <div class="pb-4"></div>
-            </div>
+            
             <div class="lg:block hidden lg:w-4/12 h-screen border-l border-gray-800 pl-4">
                 <div class="w-full p-1 mt-2 px-4 lg:flex items-center rounded-full hidden bg-[#212327]">
                     <Magnify fillColor="#5e5c5c" :size="25"/>
@@ -145,6 +159,7 @@ const textareaInput = (e) => {
                     <ArrowLeft fillColor="#ffffff" :size="28" class="md:hidden block" />
                 </div>
                 <button 
+                @click="addTweet()"
                 :disabled="!tweet"
                 :class="tweet ? 'bg-[#1c9cef] text-white' : 'bg-[#124d77] text-gray-400'"
                 class="md:hidden font-extrabold text-[16px] p-1.5 px-4 rounded-full cursor-pointer">
@@ -190,6 +205,7 @@ const textareaInput = (e) => {
                         </div>
                     </div>
                     <button 
+                    @click="addTweet()"
                     :disabled="!tweet"
                     :class="tweet? 'bg-[#1c9cef] text-white' : 'bg-[#124d77] text-gray-400'"
                     class="hidden md:block font-extrabold text-[16px] p-1.5 px-4 rounded-full cursor-pointer" 
@@ -206,5 +222,8 @@ const textareaInput = (e) => {
 <style>
 body {
     background-color: black;
+}
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
 </style>
