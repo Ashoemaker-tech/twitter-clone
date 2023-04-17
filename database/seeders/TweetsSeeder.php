@@ -90,4 +90,3 @@ class TweetsSeeder extends Seeder
         ]);
     }
     }
-}
